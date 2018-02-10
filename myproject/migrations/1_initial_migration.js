@@ -4,5 +4,5 @@ var Channel = artifacts.require("./Channel.sol");
 
 module.exports = function(deployer) {
   deployer.deploy(Migrations);
-  deployer.deploy(Channel,0x5fD65cFdA02fbF49890Fc18001d9eE98Dd8d19dA, 8);
+  deployer.deploy(Channel,0x9ec580879f31f85e7e3fa195986d833e2d9245fb, 8);
 };

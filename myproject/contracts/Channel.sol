@@ -21,7 +21,7 @@ contract Channel {
 		bytes32 proof;
 
 		// get signer from signature
-		signer = ecrecover(h, v, r, s);
+		signer = verify(h, v, r, s);
 
 		// signature is invalid, throw
 		if (signer != channelSender && signer != channelRecipient) throw;
@@ -48,30 +48,13 @@ contract Channel {
 		selfdestruct(channelSender);
 	}
 	
-	
-	function testRecovery(bytes32 h, uint8 v, bytes32 r, bytes32 s) returns (address) {
-       /* prefix might be needed for geth only
-        * https://github.com/ethereum/go-ethereum/issues/3731
-        */
-        // bytes memory prefix = "\x19Ethereum Signed Message:\n32";
-        // h = sha3(prefix, h);
-        address addr = ecrecover(h, v, r, s);
 
-        return addr;
-    }
-	
-	
-	function ecrecover1(bytes32 msgHash, uint8 v, bytes32 r, bytes32 s) constant returns(address) {
-      bytes memory prefix = "\x19Ethereum Signed Message:\n32";
-      bytes32 prefixedHash = keccak256(prefix, msgHash);
-      return ecrecover(prefixedHash, v, r, s);
-  }
-	
-	function verify(bytes32 hash, uint8 v, bytes32 r, bytes32 s) constant returns(bool) {
+
+	function verify(bytes32 hash, uint8 v, bytes32 r, bytes32 s) internal constant returns(address) {
 
         bytes memory prefix = "\x19Ethereum Signed Message:\n32";
         bytes32 prefixedHash = keccak256(prefix, hash);
-        return ecrecover(prefixedHash, v, r, s) == (msg.sender);
+        return ecrecover(prefixedHash, v, r, s);
     }
 
 }
