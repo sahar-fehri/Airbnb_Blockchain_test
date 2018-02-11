@@ -13,8 +13,8 @@ contract Channel {
 	House stateHouse;
 	enum existsNot { donotexist, pending , allowed }
 	
-	mapping(address => existsNot) allowance;   // Who is allowed to access house
-	mapping (bytes32 => address) signatures;
+	mapping(address => existsNot) public allowance;   // Who is allowed to access house
+	mapping (bytes32 => address) public signatures;
 	
 	event show_hash(bytes32);
 	event exceeded_max_allowed(string);
@@ -32,15 +32,13 @@ contract Channel {
 	}
 	
 	
-	function reserve(address[] _adTable, bytes32 _hash ) public {
+	function reserve(address _ad,bytes32 _hash ) public {
 	   
-	    for(uint i=0; i<= _adTable.length ; i++){
-	        allowance[_adTable[i]] = existsNot.pending;
-	        show_hash(_hash);
-	        
-	    }
-	    stateHouse = House.reserved;
-	     show_stateHouse("stateHouse is reserved");
+	  
+	        allowance[_ad] = existsNot.pending;
+	        //show_hash(_hash);
+	        stateHouse = House.reserved;
+	      //  show_stateHouse("stateHouse is reserved");
 	}
 	
     	
