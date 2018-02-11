@@ -12,16 +12,13 @@ contract('Channel', function(accounts) {
             mychannel = instance
             return mychannel;
         }).then(function(_c) {
-            console.log("the contract address is :", mychannel.address);
+            console.log("the contract address is :",  mychannel.address);
 
         }).then(function () {
             return mychannel.channelSender.call();
         }).then(function (_channelS) {
             console.log("channel Sender is ", _channelS)
-        }).then(function () {
-            return mychannel.channelRecipient.call();
-        }).then(function (_channelR) {
-            console.log("Channel Receipt:", _channelR)
+
         })
     });
 
@@ -56,6 +53,28 @@ contract('Channel', function(accounts) {
         console.log(result)
         assert.equal(result, address)
     });
+
+    it('should reserve house for users A and B', async function() {
+      var addressA = "0xC4C6328405F00Fa4a93715D2349f76DF0c7E8b79";
+      var addressB = "0xCCC6328405F00Fa4a93715D2349f76DF0c7E8b79";
+      var table= [addressA,addressB];
+      var myhash= web3.sha3(addressB,addressA);
+      console.log(table)
+        return mychannel.reserve(table,myhash, {from: accounts[0]}).then(function (result) {
+            for (var i = 0; i < result.logs.length; i++) {
+                var log = result.logs[i];
+
+                if (log.event == "show_hash") {
+                    // We found the event!
+                    console.log("*********************************",log)
+                    break;
+                }
+            }
+        })
+
+    })
+
+
 
 
 
